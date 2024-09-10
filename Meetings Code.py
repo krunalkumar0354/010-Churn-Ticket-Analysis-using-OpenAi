@@ -41,6 +41,6 @@ def main(event):
   meeting_notes = re.sub(r'<[^>]+>', '', meeting_notes)
   return {
     "outputFields": {
-      "meeting_notes": meeting_notes
+      "MeetingNotes": meeting_notes
     }
   }
