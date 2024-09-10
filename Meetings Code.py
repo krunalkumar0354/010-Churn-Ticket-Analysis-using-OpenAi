@@ -1,4 +1,4 @@
-import os, requests, re
+import os, requests, re, time
 
 def get_meeting_notes(token, ticket_id, base_url, headers):
     url = base_url
@@ -31,12 +31,14 @@ def get_meeting_notes(token, ticket_id, base_url, headers):
 
 def main(event):
   token = os.getenv("RevOps")
+  closedate = event.get('inputFields').get('ClosedDate')
   ticket_id = event.get('inputFields').get('hs_ticket_id')
   base_url = f'https://api.hubapi.com/engagements/v1/engagements/associated/ticket/{ticket_id}/paged'
   headers = {
     'Authorization': f'Bearer {token}',
     'Content-Type': 'application/json'
   }
+  time.sleep(5)
   meeting_notes = str(get_meeting_notes(token, ticket_id, base_url, headers))
   meeting_notes = re.sub(r'<[^>]+>', '', meeting_notes)
   return {
