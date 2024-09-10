@@ -41,6 +41,6 @@ def main(event):
   final_note = "Ticket Description = " + str(description) + ". Ticket Churn Reason = " + str(reason) + ". Ticket Churn Category = " + str(category) + ". Additional Notes added to the ticket = " + notes
   return {
     "outputFields": {
-      "notes": final_note
+      "TicketNotes": final_note
     }
   }
