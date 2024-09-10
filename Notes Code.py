@@ -29,8 +29,6 @@ def main(event):
   token = os.getenv("RevOps")
   ticket_id = event.get('inputFields').get('hs_ticket_id')
   description = event.get('inputFields').get('content')
-  reason = event.get('inputFields').get('churn_reason')
-  category = event.get('inputFields').get('churn_category')
   base_url = f'https://api.hubapi.com/engagements/v1/engagements/associated/ticket/{ticket_id}/paged'
   headers = {
     'Authorization': f'Bearer {token}',
@@ -38,7 +36,7 @@ def main(event):
   }
   html_notes = ' '.join(get_ticket_notes(token, ticket_id, base_url, headers))
   notes = re.sub(r'<[^>]+>', '', html_notes)
-  final_note = "Ticket Description = " + str(description) + ". Ticket Churn Reason = " + str(reason) + ". Ticket Churn Category = " + str(category) + ". Additional Notes added to the ticket = " + notes
+  final_note = "Ticket Description = " + str(description) + ". Additional Notes added to the ticket = " + notes
   return {
     "outputFields": {
       "TicketNotes": final_note
