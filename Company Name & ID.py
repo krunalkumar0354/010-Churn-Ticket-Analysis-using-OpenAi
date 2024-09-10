@@ -1,7 +1,8 @@
-import requests,os
+import requests,os, time
 
 def main(event):
   token = os.getenv("RevOps")
+  closedate = event.get("inputFields").get("closed_date")
   ticketid = event.get("inputFields").get("hs_ticket_id")
   url = f"https://api.hubapi.com/crm/v4/objects/tickets/{ticketid}/associations/company"
   headers = {
@@ -10,6 +11,7 @@ def main(event):
   }
   cId = None
   name = None
+  time.sleep(5)
   response = requests.get(url, headers=headers)
   if response.status_code == 200:
     company = response.json()
@@ -31,6 +33,7 @@ def main(event):
   return {
     "outputFields": {
       "AssociatedCompanyID": cId,
-      "AssociatedCompanyName": name
+      "AssociatedCompanyName": name,
+      "ClosedDate": closedate
     }
   }
