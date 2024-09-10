@@ -1,6 +1,7 @@
-import requests, os, json, re
+import requests, os, json, re, time
+from datetime import datetime, timedelta
 
-def get_notes_for_company(url, headers, company_id):
+def get_notes_for_company(url, headers, company_id, startT, endT):
   after = 0
   notes = []
   while True:
@@ -12,6 +13,16 @@ def get_notes_for_company(url, headers, company_id):
               "propertyName": "associations.company",
               "operator": "EQ",
               "value": company_id
+            },
+            {
+              "propertyName": "hs_timestamp",
+              "operator": "GTE",
+              "value": startT
+            },
+            {
+              "propertyName": "hs_timestamp",
+              "operator": "LTE",
+              "value": endT
             }
           ]
         }
@@ -36,13 +47,19 @@ def get_notes_for_company(url, headers, company_id):
 def main(event):
   token = os.getenv("RevOps")
   cId = event.get("inputFields").get("cId")
+  closedate = event.get("inputFields").get("ClosedDate")
   url = "https://api.hubapi.com/crm/v3/objects/notes/search"
   headers = {
     "Content-Type": "application/json",
     "Authorization": f"Bearer {token}"
   }
+  close_date_dt = datetime.utcfromtimestamp(int(closedate) / 1000)
+  start_date_dt = close_date_dt - timedelta(days=120)
+  start_timestamp = int(start_date_dt.timestamp() * 1000)
+  end_timestamp = int(close_date_dt.timestamp() * 1000)
   notes = []
-  noteswithextradata = get_notes_for_company(url, headers, cId)
+  time.sleep(5)
+  noteswithextradata = get_notes_for_company(url, headers, cId, start_timestamp, end_timestamp)
   for note in noteswithextradata:
     note_body = note["properties"].get("hs_note_body", "No content")
     if type(note_body) != type(None):
