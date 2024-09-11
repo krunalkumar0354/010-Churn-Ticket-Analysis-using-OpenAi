@@ -19,7 +19,6 @@ def get_meeting_notes(token, ticket_id, base_url, headers):
         data = response.json()
         for engagement in data.get('results', []):
             if engagement['engagement']['type'] == 'MEETING':
-                # Extract relevant information from the meeting engagement
                 meeting_details = {
                     'subject': engagement['metadata'].get('subject', ''),
                     'body': engagement['metadata'].get('body', '')
@@ -38,7 +37,7 @@ def main(event):
     'Authorization': f'Bearer {token}',
     'Content-Type': 'application/json'
   }
-  time.sleep(5)
+  time.sleep(3)
   meeting_notes = str(get_meeting_notes(token, ticket_id, base_url, headers))
   meeting_notes = re.sub(r'<[^>]+>', '', meeting_notes)
   return {
