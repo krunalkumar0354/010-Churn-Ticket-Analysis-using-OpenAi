@@ -58,7 +58,7 @@ def main(event):
   start_timestamp = int(start_date_dt.timestamp() * 1000)
   end_timestamp = int(close_date_dt.timestamp() * 1000)
   notes = []
-  time.sleep(5)
+  time.sleep(3)
   noteswithextradata = get_notes_for_company(url, headers, cId, start_timestamp, end_timestamp)
   for note in noteswithextradata:
     note_body = note["properties"].get("hs_note_body", "No content")
