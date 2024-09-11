@@ -35,7 +35,7 @@ def main(event):
     'Authorization': f'Bearer {token}',
     'Content-Type': 'application/json'
   }
-  time.sleep(5)
+  time.sleep(3)
   html_notes = ' '.join(get_ticket_notes(token, ticket_id, base_url, headers))
   notes = re.sub(r'<[^>]+>', '', html_notes)
   final_note = "Ticket Description = " + str(description) + ". Additional Notes added to the ticket = " + notes
