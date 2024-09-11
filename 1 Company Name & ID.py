@@ -11,7 +11,7 @@ def main(event):
   }
   cId = None
   name = None
-  time.sleep(5)
+  time.sleep(3)
   response = requests.get(url, headers=headers)
   if response.status_code == 200:
     company = response.json()
